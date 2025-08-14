@@ -1,0 +1,25 @@
+---
+- name: Instalar y configurar PHP en Ubuntu
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Actualizar la lista de paquetes
+      apt:
+        update_cache: yes
+
+    - name: Instalar Apache y PHP
+      apt:
+        name:
+          - apache2
+          - php
+          - libapache2-mod-php
+          - php-mysql
+        state: present
+
+    - name: Verificar versión de PHP
+      command: php -v
+      register: php_version
+
+    - name: Mostrar versión de PHP
+      debug:
+        var: php_version.stdout
